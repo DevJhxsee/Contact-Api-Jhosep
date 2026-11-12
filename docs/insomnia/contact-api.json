@@ -1,0 +1,73 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-11T12:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v13.4.0",
+  "resources": [
+    {
+      "_id": "wrk_contact_api",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Contact API",
+      "description": "Colección de pruebas de Contact API (ADSO, ficha 3174404)",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_contact_api_base",
+      "_type": "environment",
+      "parentId": "wrk_contact_api",
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": {},
+      "color": null,
+      "isPrivate": false
+    },
+    {
+      "_id": "env_contact_api_local",
+      "_type": "environment",
+      "parentId": "env_contact_api_base",
+      "name": "local",
+      "data": {
+        "base_url": "http://127.0.0.1:8000/api/v1"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url"]
+      },
+      "color": "#2ea043",
+      "isPrivate": false
+    },
+    {
+      "_id": "env_contact_api_prod",
+      "_type": "environment",
+      "parentId": "env_contact_api_base",
+      "name": "prod",
+      "data": {
+        "base_url": "https://3174404-XX.rdsdevs.com.co/api/v1"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url"]
+      },
+      "color": "#d73a49",
+      "isPrivate": false
+    },
+    {
+      "_id": "req_contact_api_health",
+      "_type": "request",
+      "parentId": "wrk_contact_api",
+      "name": "Health",
+      "description": "Estado del servicio",
+      "method": "GET",
+      "url": "{{ _.base_url }}/health",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {},
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": -1
+    }
+  ]
+}
