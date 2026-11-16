@@ -16,6 +16,8 @@ Proyecto del programa ADSO (SENA), ficha 3174404.
 - [Tecnologías](#tecnologías)
 - [Requisitos](#requisitos)
 - [Instalación](#instalación)
+- [Modelo de datos](#modelo-de-datos)
+- [Datos de prueba](#datos-de-prueba)
 - [Variables de entorno](#variables-de-entorno)
 - [Pruebas](#pruebas)
 - [Documentación de la API](#documentación-de-la-api)
@@ -49,6 +51,17 @@ php artisan key:generate
 php artisan migrate
 php artisan serve
 ```
+
+## Modelo de datos
+Diagrama entidad-relación: [docs/er.md](docs/er.md)
+
+## Datos de prueba
+```bash
+php artisan migrate:fresh --seed
+```
+
+Crea un usuario demo (demo@contactapi.test / password) con 10 contactos,
+y 2 usuarios más con 5 contactos cada uno. Solo para desarrollo local.
 
 ## Variables de entorno
 | Variable    | Ejemplo        | Descripción                        |
