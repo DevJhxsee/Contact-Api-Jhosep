@@ -1,7 +1,7 @@
 # Contact API
 
 [![tests](https://github.com/DevJhxsee/Contact-Api-Jhosep/actions/workflows/tests.yml/badge.svg)](https://github.com/DevJhxsee/Contact-Api-Jhosep/actions/workflows/tests.yml)
-![PHP](https://img.shields.io/badge/PHP-8.3-777BB4)
+![PHP](https://img.shields.io/badge/PHP-8.4%2B-777BB4)
 ![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-blue)
 
@@ -22,15 +22,16 @@ Proyecto del programa ADSO (SENA), ficha 3174404.
 - [Pruebas](#pruebas)
 - [Documentación de la API](#documentación-de-la-api)
 - [Endpoints](#endpoints)
+- [Autenticación](#autenticación)
 - [Flujo de trabajo](#flujo-de-trabajo)
 - [Autor](#autor)
 - [Licencia](#licencia)
 
 ## Tecnologías
-PHP 8.3, Laravel 13, MySQL 8, Laravel Sanctum, Pest, Pint, Scramble.
+PHP 8.5, Laravel 13, MySQL 8, Laravel Sanctum, Pest, Pint, Scramble.
 
 ## Requisitos
-PHP 8.3+, Composer 2, MySQL 8, Git.
+PHP 8.4+, Composer 2, MySQL 8, Git.
 
 ## Instalación
 1. Crear las bases de datos en MySQL:
@@ -70,7 +71,7 @@ y 2 usuarios más con 5 contactos cada uno. Solo para desarrollo local.
 | DB_DATABASE | db_contact_api | Base de datos MySQL                |
 | DB_USERNAME | root           | Usuario de MySQL                   |
 | DB_PASSWORD |                | Contraseña de MySQL (nunca en Git) |
-| DB_PREFIX   | jhosep_        | Prefijo de las tablas              |
+| DB_PREFIX   | j_             | Prefijo de las tablas              |
 
 ## Pruebas
 Las pruebas usan la base `db_contact_api_test`, nunca la de desarrollo.
@@ -84,9 +85,25 @@ vendor/bin/pint --test
 Con el servidor local: http://127.0.0.1:8000/docs/api
 
 ## Endpoints
-| Método | Ruta           | Descripción         | Auth |
-|--------|----------------|---------------------|------|
-| GET    | /api/v1/health | Estado del servicio | No   |
+| Método | Ruta                 | Descripción                       | Auth   |
+|--------|----------------------|-----------------------------------|--------|
+| GET    | /api/v1/health       | Estado del servicio               | No     |
+| POST   | /api/v1/auth/login   | Inicia sesión y entrega un token  | No     |
+| GET    | /api/v1/auth/me      | Perfil del usuario autenticado    | Bearer |
+| POST   | /api/v1/auth/logout  | Cierra sesión y revoca el token   | Bearer |
+
+## Autenticación
+1. `POST /api/v1/auth/login` con `email`, `password` y `device_name`.
+2. Guardar el `token` de la respuesta.
+3. Enviar en cada petición protegida:
+
+```
+Authorization: Bearer {token}
+Accept: application/json
+```
+
+Sin token, la API responde `401` en JSON con el enlace al login (`login_url`).
+El login admite 5 intentos por minuto por correo e IP.
 
 ## Flujo de trabajo
 Git Flow (main, develop, feature/\*, release/\*, hotfix/\*),
