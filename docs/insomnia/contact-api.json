@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2026-11-11T12:00:00.000Z",
+  "__export_date": "2026-11-17T12:00:00.000Z",
   "__export_source": "insomnia.desktop.app:v13.4.0",
   "resources": [
     {
@@ -17,7 +17,9 @@
       "_type": "environment",
       "parentId": "wrk_contact_api",
       "name": "Base Environment",
-      "data": {},
+      "data": {
+        "token": ""
+      },
       "dataPropertyOrder": {},
       "color": null,
       "isPrivate": false
@@ -31,7 +33,9 @@
         "base_url": "http://127.0.0.1:8000/api/v1"
       },
       "dataPropertyOrder": {
-        "&": ["base_url"]
+        "&": [
+          "base_url"
+        ]
       },
       "color": "#2ea043",
       "isPrivate": false
@@ -45,7 +49,9 @@
         "base_url": "https://3174404-XX.rdsdevs.com.co/api/v1"
       },
       "dataPropertyOrder": {
-        "&": ["base_url"]
+        "&": [
+          "base_url"
+        ]
       },
       "color": "#d73a49",
       "isPrivate": false
@@ -67,6 +73,79 @@
       "body": {},
       "parameters": [],
       "authentication": {},
+      "metaSortKey": -4
+    },
+    {
+      "_id": "req_contact_api_login",
+      "_type": "request",
+      "parentId": "wrk_contact_api",
+      "name": "Login",
+      "description": "Inicia sesión y guarda el token en el entorno",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"demo@contactapi.test\",\n  \"password\": \"password\",\n  \"device_name\": \"insomnia\"\n}"
+      },
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": -3,
+      "afterResponseScript": "const body = insomnia.response.json();\nif (body.token) {\n    insomnia.environment.set('token', body.token);\n}\n"
+    },
+    {
+      "_id": "req_contact_api_me",
+      "_type": "request",
+      "parentId": "wrk_contact_api",
+      "name": "Me",
+      "description": "Perfil del usuario autenticado",
+      "method": "GET",
+      "url": "{{ _.base_url }}/auth/me",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {},
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "metaSortKey": -2
+    },
+    {
+      "_id": "req_contact_api_logout",
+      "_type": "request",
+      "parentId": "wrk_contact_api",
+      "name": "Logout",
+      "description": "Cierra sesión y revoca el token",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/logout",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {},
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
       "metaSortKey": -1
     }
   ]
