@@ -10,7 +10,7 @@ con un token y administra solo sus propios contactos.
 Proyecto del programa ADSO (SENA), ficha 3174404.
 
 - Producción: https://3174404-XX.rdsdevs.com.co/api/v1
-- Versión actual: v0.2.0
+- Versión actual: v0.3.0
 
 ## Contenido
 - [Tecnologías](#tecnologías)
