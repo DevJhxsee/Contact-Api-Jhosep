@@ -4,6 +4,8 @@ Todos los cambios importantes de este proyecto se registran en este archivo.
 El formato sigue Keep a Changelog y el proyecto usa versionado semántico.
 
 ## [Unreleased]
+
+## [0.3.0] - 2026-11-17
 ### Added
 - Login con token de Sanctum (POST /api/v1/auth/login)
 - Perfil del usuario autenticado (GET /api/v1/auth/me)
