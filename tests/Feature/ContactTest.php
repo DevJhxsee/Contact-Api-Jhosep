@@ -55,13 +55,17 @@ describe('con sesión', function () {
             ]);
     });
 
-    it('crea un contacto para el usuario autenticado', function () {
+    it('crea un contacto válido', function () {
         $this->postJson('/api/v1/contacts', contactData())
             ->assertCreated()
             ->assertJsonPath('data.full_name', 'Ana Pérez')
             ->assertJsonPath('data.email', 'ana.perez@correo.test');
 
-        expect($this->user->contacts()->count())->toBe(1);
+        $this->assertDatabaseHas('contacts', [
+            'user_id' => $this->user->id,
+            'email' => 'ana.perez@correo.test',
+            'phone_number' => '3001234567',
+        ]);
     });
 
     it('permite dejar vacíos el apellido y la foto', function () {
@@ -71,10 +75,12 @@ describe('con sesión', function () {
             ->assertJsonPath('data.full_name', 'Ana');
     });
 
-    it('valida los campos obligatorios', function (string $campo) {
+    it('no crea el contacto si falta un campo obligatorio', function (string $campo) {
         $this->postJson('/api/v1/contacts', contactData([$campo => '']))
             ->assertUnprocessable()
-            ->assertJsonValidationErrors([$campo]);
+            ->assertInvalid([$campo]);
+
+        $this->assertDatabaseCount('contacts', 0);
     })->with(['first_name', 'phone_number', 'email', 'address']);
 
     it('valida el formato del correo y de la foto', function () {
@@ -84,20 +90,31 @@ describe('con sesión', function () {
             ->assertJsonPath('errors.avatar_url.0', 'La foto debe ser una URL válida.');
     });
 
-    it('no permite repetir el correo de otro contacto', function () {
-        Contact::factory()->for($this->otro)->create(['email' => 'ana.perez@correo.test']);
+    it('no permite repetir el correo en mi agenda', function () {
+        Contact::factory()->for($this->user)->create(['email' => 'ana.perez@correo.test']);
 
         $this->postJson('/api/v1/contacts', contactData())
             ->assertUnprocessable()
-            ->assertJsonPath('errors.email.0', 'Ya existe un contacto con este correo.');
+            ->assertJsonPath('errors.email.0', 'Ya tienes un contacto con este correo.');
+
+        expect($this->user->contacts()->count())->toBe(1);
     });
 
-    it('no permite repetir el teléfono de otro contacto', function () {
+    it('no permite repetir el teléfono en mi agenda', function () {
         Contact::factory()->for($this->user)->create(['phone_number' => '3001234567']);
 
         $this->postJson('/api/v1/contacts', contactData())
             ->assertUnprocessable()
-            ->assertJsonPath('errors.phone_number.0', 'Ya existe un contacto con este teléfono.');
+            ->assertJsonPath('errors.phone_number.0', 'Ya tienes un contacto con este teléfono.');
+    });
+
+    it('permite el mismo correo y teléfono que un contacto de otro usuario', function () {
+        Contact::factory()->for($this->otro)->create([
+            'email' => 'ana.perez@correo.test',
+            'phone_number' => '3001234567',
+        ]);
+
+        $this->postJson('/api/v1/contacts', contactData())->assertCreated();
     });
 
     it('permite repetir el nombre y la dirección', function () {
@@ -121,14 +138,20 @@ describe('con sesión', function () {
             ->assertJsonPath('data.email', $contact->email);
     });
 
-    it('no deja usar el contacto de otro usuario', function (string $metodo) {
-        $ajeno = Contact::factory()->for($this->otro)->create();
+    it('devuelve 404 para un contacto ajeno', function (string $metodo) {
+        $ajeno = Contact::factory()->for($this->otro)->create(['first_name' => 'Contacto privado']);
 
         $this->json($metodo, "/api/v1/contacts/{$ajeno->id}", contactData())
-            ->assertForbidden()
-            ->assertJsonPath('message', 'Este contacto no te pertenece.');
+            ->assertNotFound()
+            ->assertJsonPath('message', 'El recurso solicitado no existe.')
+            ->assertJsonMissing(['first_name' => 'Contacto privado']);
 
-        expect(Contact::find($ajeno->id))->not->toBeNull();
+        $this->assertDatabaseHas('contacts', [
+            'id' => $ajeno->id,
+            'user_id' => $this->otro->id,
+            'first_name' => 'Contacto privado',
+            'deleted_at' => null,
+        ]);
     })->with(['GET', 'PUT', 'DELETE']);
 
     it('responde 404 en JSON si el contacto no existe', function () {
@@ -171,7 +194,7 @@ describe('con sesión', function () {
 
         $this->patchJson("/api/v1/contacts/{$contact->id}", ['email' => $otroContacto->email])
             ->assertUnprocessable()
-            ->assertJsonPath('errors.email.0', 'Ya existe un contacto con este correo.');
+            ->assertJsonPath('errors.email.0', 'Ya tienes un contacto con este correo.');
     });
 
     it('elimina mi contacto con soft delete', function () {
