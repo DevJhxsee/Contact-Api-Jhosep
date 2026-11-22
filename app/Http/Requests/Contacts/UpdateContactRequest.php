@@ -22,8 +22,8 @@ class UpdateContactRequest extends StoreContactRequest
         return [
             'first_name' => ['sometimes', 'required', 'string', 'max:100'],
             'last_name' => ['sometimes', 'nullable', 'string', 'max:100'],
-            'phone_number' => ['sometimes', 'required', 'string', 'max:20', Rule::unique(Contact::class, 'phone_number')->ignore($contact)],
-            'email' => ['sometimes', 'required', 'email', 'max:255', Rule::unique(Contact::class, 'email')->ignore($contact)],
+            'phone_number' => ['sometimes', 'required', 'string', 'max:20', Rule::unique(Contact::class, 'phone_number')->where('user_id', $contact->user_id)->ignore($contact)],
+            'email' => ['sometimes', 'required', 'email', 'max:255', Rule::unique(Contact::class, 'email')->where('user_id', $contact->user_id)->ignore($contact)],
             'address' => ['sometimes', 'required', 'string', 'max:255'],
             'avatar_url' => ['sometimes', 'nullable', 'url', 'max:2048'],
         ];

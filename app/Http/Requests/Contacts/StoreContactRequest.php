@@ -18,8 +18,8 @@ class StoreContactRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['nullable', 'string', 'max:100'],
-            'phone_number' => ['required', 'string', 'max:20', Rule::unique(Contact::class, 'phone_number')],
-            'email' => ['required', 'email', 'max:255', Rule::unique(Contact::class, 'email')],
+            'phone_number' => ['required', 'string', 'max:20', Rule::unique(Contact::class, 'phone_number')->where('user_id', $this->user()->id)],
+            'email' => ['required', 'email', 'max:255', Rule::unique(Contact::class, 'email')->where('user_id', $this->user()->id)],
             'address' => ['required', 'string', 'max:255'],
             'avatar_url' => ['nullable', 'url', 'max:2048'],
         ];
@@ -33,10 +33,10 @@ class StoreContactRequest extends FormRequest
             'last_name.max' => 'El apellido admite máximo 100 caracteres.',
             'phone_number.required' => 'El teléfono es obligatorio.',
             'phone_number.max' => 'El teléfono admite máximo 20 caracteres.',
-            'phone_number.unique' => 'Ya existe un contacto con este teléfono.',
+            'phone_number.unique' => 'Ya tienes un contacto con este teléfono.',
             'email.required' => 'El correo es obligatorio.',
             'email.email' => 'El correo no tiene un formato válido.',
-            'email.unique' => 'Ya existe un contacto con este correo.',
+            'email.unique' => 'Ya tienes un contacto con este correo.',
             'address.required' => 'La dirección es obligatoria.',
             'address.max' => 'La dirección admite máximo 255 caracteres.',
             'avatar_url.url' => 'La foto debe ser una URL válida.',
