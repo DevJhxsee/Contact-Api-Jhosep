@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2026-11-17T12:00:00.000Z",
+  "__export_date": "2026-11-22T12:00:00.000Z",
   "__export_source": "insomnia.desktop.app:v13.4.0",
   "resources": [
     {
@@ -18,7 +18,8 @@
       "parentId": "wrk_contact_api",
       "name": "Base Environment",
       "data": {
-        "token": ""
+        "token": "",
+        "contact_id": "1"
       },
       "dataPropertyOrder": {},
       "color": null,
@@ -133,6 +134,145 @@
       "description": "Cierra sesión y revoca el token",
       "method": "POST",
       "url": "{{ _.base_url }}/auth/logout",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {},
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "metaSortKey": -1
+    },
+    {
+      "_id": "fld_contact_api_contacts",
+      "_type": "request_group",
+      "parentId": "wrk_contact_api",
+      "name": "Contactos",
+      "description": "CRUD de contactos del usuario autenticado",
+      "environment": {},
+      "metaSortKey": 0
+    },
+    {
+      "_id": "req_contacts_index",
+      "_type": "request",
+      "parentId": "fld_contact_api_contacts",
+      "name": "Listar contactos",
+      "description": "Contactos del usuario autenticado (paginados)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/contacts",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {},
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "metaSortKey": -5
+    },
+    {
+      "_id": "req_contacts_store",
+      "_type": "request",
+      "parentId": "fld_contact_api_contacts",
+      "name": "Crear contacto",
+      "description": "Crea un contacto y guarda su id en el entorno",
+      "method": "POST",
+      "url": "{{ _.base_url }}/contacts",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"first_name\": \"Ana\",\n  \"last_name\": \"Pérez\",\n  \"phone_number\": \"3001234567\",\n  \"email\": \"ana.perez@correo.test\",\n  \"address\": \"Calle 10 # 5-20\",\n  \"avatar_url\": null\n}"
+      },
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "metaSortKey": -4,
+      "afterResponseScript": "const body = insomnia.response.json();\nif (body.data && body.data.id) {\n    insomnia.environment.set('contact_id', String(body.data.id));\n}\n"
+    },
+    {
+      "_id": "req_contacts_show",
+      "_type": "request",
+      "parentId": "fld_contact_api_contacts",
+      "name": "Ver contacto",
+      "description": "Perfil del contacto {{ _.contact_id }}",
+      "method": "GET",
+      "url": "{{ _.base_url }}/contacts/{{ _.contact_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {},
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "metaSortKey": -3
+    },
+    {
+      "_id": "req_contacts_update",
+      "_type": "request",
+      "parentId": "fld_contact_api_contacts",
+      "name": "Actualizar contacto",
+      "description": "Cambia solo los campos enviados",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/contacts/{{ _.contact_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"address\": \"Carrera 7 # 12-30\"\n}"
+      },
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "metaSortKey": -2
+    },
+    {
+      "_id": "req_contacts_destroy",
+      "_type": "request",
+      "parentId": "fld_contact_api_contacts",
+      "name": "Eliminar contacto",
+      "description": "Soft delete del contacto",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/contacts/{{ _.contact_id }}",
       "headers": [
         {
           "name": "Accept",
