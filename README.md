@@ -99,9 +99,11 @@ Con el servidor local: http://127.0.0.1:8000/docs/api
 | DELETE | /api/v1/contacts/{id} | Elimina un contacto (soft delete) | Bearer |
 
 ## Reglas de los contactos
-- Cada usuario solo ve y modifica sus propios contactos: el contacto de otro usuario responde `403`.
+- Cada usuario solo ve y modifica sus propios contactos. El contacto de otro usuario responde `404`,
+  igual que uno inexistente, para no confirmar que existe en otra agenda.
 - Un contacto que no existe, o que fue eliminado, responde `404` en JSON.
-- El email y el teléfono no se pueden repetir; el nombre, el apellido y la dirección sí.
+- El email y el teléfono no se pueden repetir dentro de la agenda de un usuario (`422`);
+  el nombre, el apellido y la dirección sí se pueden repetir.
 - Al eliminar se usa soft delete: el contacto se marca con `deleted_at` y deja de aparecer.
 
 ## Autenticación
