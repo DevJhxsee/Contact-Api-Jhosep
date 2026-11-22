@@ -22,6 +22,7 @@ Proyecto del programa ADSO (SENA), ficha 3174404.
 - [Pruebas](#pruebas)
 - [Documentación de la API](#documentación-de-la-api)
 - [Endpoints](#endpoints)
+- [Reglas de los contactos](#reglas-de-los-contactos)
 - [Autenticación](#autenticación)
 - [Flujo de trabajo](#flujo-de-trabajo)
 - [Autor](#autor)
@@ -85,12 +86,25 @@ vendor/bin/pint --test
 Con el servidor local: http://127.0.0.1:8000/docs/api
 
 ## Endpoints
-| Método | Ruta                 | Descripción                       | Auth   |
-|--------|----------------------|-----------------------------------|--------|
-| GET    | /api/v1/health       | Estado del servicio               | No     |
-| POST   | /api/v1/auth/login   | Inicia sesión y entrega un token  | No     |
-| GET    | /api/v1/auth/me      | Perfil del usuario autenticado    | Bearer |
-| POST   | /api/v1/auth/logout  | Cierra sesión y revoca el token   | Bearer |
+| Método | Ruta                  | Descripción                       | Auth   |
+|--------|-----------------------|-----------------------------------|--------|
+| GET    | /api/v1/health        | Estado del servicio               | No     |
+| POST   | /api/v1/auth/login    | Inicia sesión y entrega un token  | No     |
+| GET    | /api/v1/auth/me       | Perfil del usuario autenticado    | Bearer |
+| POST   | /api/v1/auth/logout   | Cierra sesión y revoca el token   | Bearer |
+| GET    | /api/v1/contacts      | Lista mis contactos (paginados)   | Bearer |
+| POST   | /api/v1/contacts      | Crea un contacto                  | Bearer |
+| GET    | /api/v1/contacts/{id} | Perfil de un contacto             | Bearer |
+| PUT    | /api/v1/contacts/{id} | Actualiza un contacto             | Bearer |
+| DELETE | /api/v1/contacts/{id} | Elimina un contacto (soft delete) | Bearer |
+
+## Reglas de los contactos
+- Cada usuario solo ve y modifica sus propios contactos. El contacto de otro usuario responde `404`,
+  igual que uno inexistente, para no confirmar que existe en otra agenda.
+- Un contacto que no existe, o que fue eliminado, responde `404` en JSON.
+- El email y el teléfono no se pueden repetir dentro de la agenda de un usuario (`422`);
+  el nombre, el apellido y la dirección sí se pueden repetir.
+- Al eliminar se usa soft delete: el contacto se marca con `deleted_at` y deja de aparecer.
 
 ## Autenticación
 1. `POST /api/v1/auth/login` con `email`, `password` y `device_name`.

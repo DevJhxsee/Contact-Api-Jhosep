@@ -65,11 +65,22 @@ it('no permite repetir el campo único en usuarios', function (string $field) {
     User::factory()->create([$field => $user->{$field}]);
 })->with(['email', 'phone_number'])->throws(UniqueConstraintViolationException::class);
 
-it('no permite repetir el campo único en contactos', function (string $field) {
+it('no permite repetir el campo único en la agenda de un mismo usuario', function (string $field) {
     $contact = Contact::factory()->create();
 
-    Contact::factory()->create([$field => $contact->{$field}]);
+    Contact::factory()->for($contact->user)->create([$field => $contact->{$field}]);
 })->with(['email', 'phone_number'])->throws(UniqueConstraintViolationException::class);
+
+it('permite el mismo correo y teléfono en agendas de usuarios distintos', function () {
+    $contact = Contact::factory()->create();
+
+    Contact::factory()->create([
+        'email' => $contact->email,
+        'phone_number' => $contact->phone_number,
+    ]);
+
+    expect(Contact::where('email', $contact->email)->count())->toBe(2);
+});
 
 it('siembra el usuario demo y los contactos de ejemplo', function () {
     $this->seed(DatabaseSeeder::class);

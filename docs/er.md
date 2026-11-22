@@ -20,8 +20,8 @@ erDiagram
         bigint user_id FK
         string first_name
         string last_name "opcional"
-        string phone_number UK
-        string email UK
+        string phone_number "único por usuario"
+        string email "único por usuario"
         string address
         string avatar_url "opcional"
         timestamp created_at
@@ -32,5 +32,6 @@ erDiagram
 
 - Un usuario tiene muchos contactos; cada contacto pertenece a un solo usuario.
 - Si se elimina un usuario, se eliminan sus contactos (`cascadeOnDelete`).
-- El email y el teléfono no se pueden repetir. El nombre, el apellido y la dirección sí.
+- En la tabla users, el email y el teléfono son únicos.
+- En la tabla contacts, el email y el teléfono son únicos **dentro de la agenda de cada usuario** (`user_id + email` y `user_id + phone_number`): dos usuarios distintos sí pueden tener el mismo contacto. El nombre, el apellido y la dirección se pueden repetir.
 - Al borrar un contacto se usa soft delete: se llena `deleted_at` y la fila se conserva.
