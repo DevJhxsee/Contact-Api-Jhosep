@@ -25,8 +25,10 @@ class ContactPolicy
 
     private function esDueno(User $user, Contact $contact): Response
     {
+        // Un contacto ajeno responde 404, igual que uno inexistente:
+        // así la API no confirma que existe en la agenda de otra persona.
         return $contact->user()->is($user)
             ? Response::allow()
-            : Response::deny('Este contacto no te pertenece.');
+            : Response::denyAsNotFound('El recurso solicitado no existe.');
     }
 }
