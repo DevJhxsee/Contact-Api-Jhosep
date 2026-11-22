@@ -4,6 +4,14 @@ Todos los cambios importantes de este proyecto se registran en este archivo.
 El formato sigue Keep a Changelog y el proyecto usa versionado semántico.
 
 ## [Unreleased]
+### Added
+- CRUD de contactos: listar, crear, ver, actualizar y eliminar (/api/v1/contacts)
+- Perfil del contacto con ContactResource
+- Política para que cada usuario solo use sus propios contactos (403 si es ajeno)
+- Validación de contactos con mensajes en español; email y teléfono únicos
+- Eliminación con soft delete
+- Respuesta 404 en JSON con mensaje en español
+- CRUD de contactos en la colección de Insomnia
 
 ## [0.3.0] - 2026-11-17
 ### Added
