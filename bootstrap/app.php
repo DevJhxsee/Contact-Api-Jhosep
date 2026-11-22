@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -29,6 +30,15 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'No autenticado. Inicia sesión para continuar.',
                     'login_url' => route('auth.login'),
                 ], 401);
+            }
+        });
+
+        // Link o registro que no existe: 404 en JSON con mensaje en español.
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'El recurso solicitado no existe.',
+                ], 404);
             }
         });
     })->create();
