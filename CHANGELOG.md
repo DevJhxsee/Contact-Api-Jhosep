@@ -4,6 +4,8 @@ Todos los cambios importantes de este proyecto se registran en este archivo.
 El formato sigue Keep a Changelog y el proyecto usa versionado semántico.
 
 ## [Unreleased]
+
+## [1.0.0] - 2026-11-22
 ### Added
 - CRUD de contactos: listar, crear, ver, actualizar y eliminar (/api/v1/contacts)
 - Perfil del contacto con ContactResource
