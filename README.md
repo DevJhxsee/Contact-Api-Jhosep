@@ -1,6 +1,6 @@
 # Contact API
 
-[![tests](https://github.com/DevJhxsee/Contact-Api-Jhosep/actions/workflows/tests.yml/badge.svg)](https://github.com/DevJhxsee/Contact-Api-Jhosep/actions/workflows/tests.yml)
+[![tests](https://github.com/Tokyo-Jhx/Contact-Api-Jhosep/actions/workflows/tests.yml/badge.svg)](https://github.com/Tokyo-Jhx/Contact-Api-Jhosep/actions/workflows/tests.yml)
 ![PHP](https://img.shields.io/badge/PHP-8.4%2B-777BB4)
 ![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-blue)
@@ -45,7 +45,7 @@ CREATE DATABASE db_contact_api_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicod
 2. Clonar e instalar:
 
 ```bash
-git clone https://github.com/DevJhxsee/Contact-Api-Jhosep.git
+git clone https://github.com/Tokyo-Jhx/Contact-Api-Jhosep.git
 cd Contact-Api-Jhosep
 composer install
 cp .env.example .env
@@ -125,7 +125,7 @@ Conventional Commits y versionado semántico.
 Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
 
 ## Autor
-Jhosep Suarez · aprendiz ADSO · github.com/DevJhxsee
+Jhosep Suarez · aprendiz ADSO · github.com/Tokyo-Jhx
 
 ## Licencia
 Distribuido bajo la licencia MIT. Ver [LICENSE.md](LICENSE.md).
