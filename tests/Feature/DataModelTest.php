@@ -89,6 +89,7 @@ it('siembra el usuario demo y los contactos de ejemplo', function () {
 
     expect($demo)->not->toBeNull()
         ->and($demo->contacts)->toHaveCount(10)
-        ->and(User::count())->toBe(3)
-        ->and(Contact::count())->toBe(20);
+        ->and(User::firstWhere('email', 'prueba@test.com')->contacts)->toHaveCount(5)
+        ->and(User::count())->toBe(4)
+        ->and(Contact::count())->toBe(25);
 });

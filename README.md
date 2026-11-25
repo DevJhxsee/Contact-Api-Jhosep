@@ -62,8 +62,13 @@ Diagrama entidad-relación: [docs/er.md](docs/er.md)
 php artisan migrate:fresh --seed
 ```
 
-Crea un usuario demo (demo@contactapi.test / password) con 10 contactos,
-y 2 usuarios más con 5 contactos cada uno. Solo para desarrollo local.
+Crea estos usuarios de prueba (todos con la contraseña `password`):
+
+- `demo@contactapi.test`, con 10 contactos
+- `prueba@test.com`, con 5 contactos
+- 2 usuarios más con correos al azar, con 5 contactos cada uno
+
+Solo para desarrollo local.
 
 ## Variables de entorno
 | Variable    | Ejemplo        | Descripción                        |

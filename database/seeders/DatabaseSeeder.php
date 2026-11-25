@@ -18,6 +18,14 @@ class DatabaseSeeder extends Seeder
 
         Contact::factory(10)->for($demo)->create();
 
+        $prueba = User::factory()->create([
+            'first_name' => 'Usuario',
+            'last_name' => 'Prueba',
+            'email' => 'prueba@test.com',
+        ]);
+
+        Contact::factory(5)->for($prueba)->create();
+
         User::factory(2)
             ->has(Contact::factory(5))
             ->create();
