@@ -96,7 +96,7 @@
       ],
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"email\": \"demo@contactapi.test\",\n  \"password\": \"password\",\n  \"device_name\": \"insomnia\"\n}"
+        "text": "{\n  \"email\": \"demo@contactapi.test\",\n  \"password\": \"password\"\n}"
       },
       "parameters": [],
       "authentication": {},
