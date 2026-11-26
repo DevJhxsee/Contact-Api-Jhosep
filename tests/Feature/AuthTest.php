@@ -8,7 +8,6 @@ function loginData(array $cambios = []): array
     return array_merge([
         'email' => 'ana@contactapi.test',
         'password' => 'secreta123',
-        'device_name' => 'pruebas',
     ], $cambios);
 }
 
@@ -45,7 +44,7 @@ it('valida los campos obligatorios', function (string $campo) {
     $this->postJson('/api/v1/auth/login', loginData([$campo => '']))
         ->assertUnprocessable()
         ->assertJsonValidationErrors([$campo]);
-})->with(['email', 'password', 'device_name']);
+})->with(['email', 'password']);
 
 it('pide token para ver el perfil', function () {
     $this->getJson('/api/v1/auth/me')->assertUnauthorized();

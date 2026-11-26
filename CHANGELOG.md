@@ -5,6 +5,10 @@ El formato sigue Keep a Changelog y el proyecto usa versionado semántico.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-26
+### Changed
+- El login solo pide correo y contraseña (se quitó device_name)
+
 ## [1.0.0] - 2026-11-22
 ### Added
 - CRUD de contactos: listar, crear, ver, actualizar y eliminar (/api/v1/contacts)
