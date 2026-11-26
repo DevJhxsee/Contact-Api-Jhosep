@@ -10,7 +10,7 @@ con un token y administra solo sus propios contactos.
 Proyecto del programa ADSO (SENA), ficha 3174404.
 
 - Producción: https://3174404-XX.rdsdevs.com.co/api/v1
-- Versión actual: v1.0.0
+- Versión actual: v1.0.1
 
 ## Contenido
 - [Tecnologías](#tecnologías)
@@ -107,7 +107,7 @@ Con el servidor local: http://127.0.0.1:8000/docs/api
 - Al eliminar se usa soft delete: el contacto se marca con `deleted_at` y deja de aparecer.
 
 ## Autenticación
-1. `POST /api/v1/auth/login` con `email`, `password` y `device_name`.
+1. `POST /api/v1/auth/login` con `email` y `password`.
 2. Guardar el `token` de la respuesta.
 3. Enviar en cada petición protegida:
 
